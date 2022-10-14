@@ -1,4 +1,3 @@
-import os.path
 import pandas as pd
 
 import sys

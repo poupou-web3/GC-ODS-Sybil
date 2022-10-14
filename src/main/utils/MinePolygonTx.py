@@ -8,21 +8,23 @@ class MinePolygonTx(MineTx):
         self.matic = PolygonScan(api_key, False)
 
     def get_txn_normal(self, address, page):
-        return self.matic.get_normal_txs_by_address_paginated(
-            address=address,
-            startblock=0,
-            endblock=99999999,
-            sort="desc",
-            page=page,
-            offset=self.per_page_txn,
-        )
+        with PolygonScan(self.api_key, False) as matic:
+            return matic.get_normal_txs_by_address_paginated(
+                address=address,
+                startblock=0,
+                endblock=99999999,
+                sort="desc",
+                page=page,
+                offset=self.per_page_txn,
+            )
 
     def get_txn_internal(self, address, page):
-        return self.matic.get_internal_txs_by_address_paginated(
-            address=address,
-            startblock=0,
-            endblock=99999999,
-            sort="desc",
-            page=page,
-            offset=self.per_page_txn,
-        )
+        with PolygonScan(self.api_key, False) as matic:
+            return self.matic.get_internal_txs_by_address_paginated(
+                address=address,
+                startblock=0,
+                endblock=99999999,
+                sort="desc",
+                page=page,
+                offset=self.per_page_txn,
+            )
