@@ -1,14 +1,14 @@
-from etherscan import Etherscan
+from polygonscan import PolygonScan
 from src.main.utils.MineTx import MineTx
 
 
-class MineEthTx(MineTx):
+class MinePolygonTx(MineTx):
     def __init__(self, api_key, per_page_txn, api_counter):
         super().__init__(self, per_page_txn, api_counter)
-        self.eth = Etherscan(api_key)
+        self.matic = PolygonScan(api_key, False)
 
     def get_txn_normal(self, address, page):
-        return self.eth.get_normal_txs_by_address_paginated(
+        return self.matic.get_normal_txs_by_address_paginated(
             address=address,
             startblock=0,
             endblock=99999999,
@@ -18,7 +18,7 @@ class MineEthTx(MineTx):
         )
 
     def get_txn_internal(self, address, page):
-        return self.eth.get_internal_txs_by_address_paginated(
+        return self.matic.get_internal_txs_by_address_paginated(
             address=address,
             startblock=0,
             endblock=99999999,
