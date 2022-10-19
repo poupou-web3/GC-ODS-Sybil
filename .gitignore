@@ -1,0 +1,14 @@
+#Compiled files
+*.pyc
+
+# Jupyter
+*/.ipynb_checkpoints
+*.ipynb
+
+# Folder
+/data
+/vGitcoinViz
+/logs
+
+#vscode
+/.vscode
