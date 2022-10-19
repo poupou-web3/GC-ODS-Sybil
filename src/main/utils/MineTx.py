@@ -1,6 +1,6 @@
-from this import s
 import pandas as pd
 import time
+import os
 
 
 class MineTx:
@@ -40,14 +40,18 @@ class MineTx:
         txn_df = pd.DataFrame(list_txn)
         return txn_df
 
-    def save_csv(self, df, csv_path, address, tx_type, network):
-        df.to_csv(csv_path + "/" + network + "_" + address + "_tx_" + tx_type)
+    def save_csv(self, df, csv_dir, address, tx_type, network):
+        df.to_csv(csv_dir + "/" + network + "_" + address + "_tx_" + tx_type)
 
-    def create_csv(self, csv_path, address, tx_type, network):
+    def create_csv(self, csv_dir, address, tx_type, network):
         try:
             df = self.get_df_txn(address, tx_type)
-            # TODO assert path exist and create it
-            self.save_csv(df, csv_path, address, tx_type, network)
+            df["address"] = address
+            
+            if not os.path.exists(csv_dir):
+                os.makedirs(csv_dir)
+
+            self.save_csv(df, csv_dir, address, tx_type, network)
         except AssertionError as err:
             print(
                 "No transaction found for address #{0} {1} /n error: {2}".format(

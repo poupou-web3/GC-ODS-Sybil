@@ -4,8 +4,7 @@ from src.main.utils.MineTx import MineTx
 
 class MinePolygonTx(MineTx):
     def __init__(self, api_key, per_page_txn, api_counter):
-        super().__init__(self, per_page_txn, api_counter)
-        self.matic = PolygonScan(api_key, False)
+        super().__init__(api_key, per_page_txn, api_counter)
 
     def get_txn_normal(self, address, page):
         with PolygonScan(self.api_key, False) as matic:
@@ -20,7 +19,7 @@ class MinePolygonTx(MineTx):
 
     def get_txn_internal(self, address, page):
         with PolygonScan(self.api_key, False) as matic:
-            return self.matic.get_internal_txs_by_address_paginated(
+            return matic.get_internal_txs_by_address_paginated(
                 address=address,
                 startblock=0,
                 endblock=99999999,
