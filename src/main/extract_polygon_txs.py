@@ -11,8 +11,8 @@ from src.main.utils.MinePolygonTx import MinePolygonTx
 PER_PAGE = 100
 API_KEY = 'DJ7M8MNPMSI46VQKRRCYPCCIT2VJKVG68K'
 TX_CHAIN ='eth_polygon'
-from_address_number = 0
-to_address_number = 200000
+from_address_number = 1145
+to_address_nbr = 200000
 
 
 miner = MinePolygonTx(API_KEY, PER_PAGE, 0)
@@ -29,7 +29,7 @@ path_to_export = absolute_path + '/data/transactions/' + TX_CHAIN
 full_path_to_logs = absolute_path + '/logs/log_' + TX_CHAIN + ".txt"
 f = open(full_path_to_logs, "a")
 
-for ads in unique_eth_std_address[from_address_number:to_address_number]:
+for ads in unique_eth_std_address[from_address_number: min(to_address_nbr, len(unique_eth_std_address) + 1)]:
     f.write('Address'+ ' #' + str(from_address_number) + ' ' + ads + 'api call #' + str(miner.api_counter) + '\n')
     print('Address'+ ' #' + str(from_address_number) + ' ' + ads+ 'api call #' + str(miner.api_counter))
     miner.create_csv(path_to_export, ads, 'normal', TX_CHAIN)

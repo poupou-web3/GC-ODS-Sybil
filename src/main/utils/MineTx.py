@@ -23,10 +23,8 @@ class MineTx:
 
             if tx_type == "normal":
                 txn_dict =  self.get_txn_normal(address, page)
-                self.api_counter += 1
             else:  # transaction are considered internal
                 txn_dict = self.get_txn_internal(address, page)
-                self.api_counter += 1
 
             if page == 0:
                 list_txn = txn_dict
@@ -35,6 +33,7 @@ class MineTx:
 
             per_page = len(txn_dict)
             page += 1
+            self.api_counter += 1
             total_time = time.time() - start_time
 
         txn_df = pd.DataFrame(list_txn)
