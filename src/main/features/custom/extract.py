@@ -16,7 +16,7 @@ def time_since_first(x, current_time):
     :return type: float
     """
     result = (current_time - np.min(x))
-    return
+    return result
     
 @set_property("fctype", "simple")
 def time_since_last(x, current_time):
@@ -102,22 +102,22 @@ def ratio_above(x, v):
     return result
 
 @set_property("fctype", "simple") #could be useful for gas
-def ratio_between_quartiles(x, q1, q2):
+def ratio_between_quantile(x, q1, q2):
     """
     Return the ratio of values above the mean value
 
     :param x: the time series to calculate the feature of
     :type x: numpy.ndarray
-    :param q1: A first quartile between 0 and 100
+    :param q1: A first quartile between 0 and 1
     :type q1: float
-    :param q2: A first quartile between 0 and 100 should be superior to q1
+    :param q2: A first quartile between 0 and 1 should be superior to q1
     :type q2: float
     :return: the value of this feature
     :return type: float
     """
     #TODO compute Q1 and Q2 values
-    bool_above = x >=  np.quantiles(x, q1)
-    bool_below = x <= np.quantiles(x, q2)
+    bool_above = x >=  np.quantile(x, q1)
+    bool_below = x <= np.quantile(x, q2)
     bool_between = np.logical_and(bool_above, bool_below)
     result = bool_between.sum() / len(x)
     return result

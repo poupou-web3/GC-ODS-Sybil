@@ -1,11 +1,13 @@
 import time
+from src.main.features.custom.extract import time_since_first, time_since_last, ratio_tx_time_since_time, ratio_tx_time_since_last_tx, ratio_above_mean, ratio_above, ratio_between_quantile
 
-1DAY = 3600
-1WEEk = 7*1DAY
-1MONTH = 30*1DAY
-3MONTH = 3*1MONTH
 
-current_time = time()
+DAY = 3600
+WEEK = 7*DAY
+MONTH = 30*DAY
+MONTHS_3 = 3*MONTH
+
+current_time = time.time()
 
 FC_TSFRESH_TIME = {
     "approximate_entropy": [{'m': 2, 'r': 0.1},
@@ -33,33 +35,32 @@ FC_TSFRESH_TIME = {
     "mean_change": None,
     "mean_second_derivative_central": None,
     "median": None,
-    "quantile": [{'q': 99},
-            {'q': 95},
-            {'q': 90},
-            {'q': 80},
-            {'q': 20}],
+    "quantile": [{'q': 0.99},
+            {'q': 0.95},
+            {'q': 0.90},
+            {'q': 0.80},
+            {'q': 0.20}],
     "ratio_beyond_r_sigma" : [{'r': 1},
-            {'q': 2},
-            {'q': 6}],
+            {'r': 2},
+            {'r': 6}],
     "skewness": None,
     "standard_deviation": None,
     "variance": None,
     "variance_larger_than_standard_deviation": None,
     "variation_coefficient": None,
-    "time_since_first": [{'current_time': current_time}],
-    "time_since_last": [{'current_time': current_time}],
-    "ratio_tx_time_since_time": 
-        [{'current_time': current_time, "time": 1DAY},
-        {'current_time': current_time, "time": 1WEEK}
-        {'current_time': current_time, "time": 1MONTH}
-        {'current_time': current_time, "time": 3MONTHS}],
-    "ratio_tx_time_since_last_tx": 
-        [{"time": 1DAY},
-        {"time": 1WEEK}
-        {"time": 1MONTH}
-        {"time": 3MONTHS}],
-    "ratio_above_mean": None
 }
+
+FC_TSFRESH_TIME[time_since_first] = [{'current_time': current_time}]
+FC_TSFRESH_TIME[time_since_last] = [{'current_time': current_time}]
+FC_TSFRESH_TIME[ratio_tx_time_since_time] = [{'current_time': current_time, "time": DAY},
+          {'current_time': current_time, "time": WEEK},
+          {'current_time': current_time, "time": MONTH},
+          {'current_time': current_time, "time": MONTHS_3}]
+FC_TSFRESH_TIME[ratio_tx_time_since_last_tx] = [{"time": DAY},
+          {"time": WEEK},
+          {"time": MONTH},
+          {"time": MONTHS_3}]
+FC_TSFRESH_TIME[ratio_above_mean] = None
 
 FC_TSFRESH_VALUE = {
     "abs_energy": None,
