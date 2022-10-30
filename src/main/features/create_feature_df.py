@@ -1,6 +1,8 @@
 import sys
-absolute_path = 'd:\\Perso\\Gitcoin\\Hackathon_open_data'
-if not absolute_path in sys.path:
+import os
+from pathlib import Path
+absolute_path = os.fspath(Path.cwd().parent)
+if absolute_path not in sys.path:
     sys.path.append(absolute_path)
 
 import pandas as pd
@@ -15,7 +17,8 @@ from src.main.utils.processing import *
 from src.main.features.conf import *
 from src.main.features.create_features import *
 
-N_FILES = 20
+N_FILES = -1
+ETH_DECIMAL = 10E18
 
 tx_chain = 'eth_std'
 RELATIVE_PATH_TX = '/data/transactions/'
@@ -35,23 +38,60 @@ if __name__ == '__main__':
     # reset index two times to reinitialise the order(to ascending sort) to use it as a time serie indexer 
     df = df.reset_index(drop=True).reset_index()
 
-    # convert value column to float
-    df["value"] = [float(df.loc[i, "value"]) for i in range (df.shape[0])]
+    # convert value column to float and 
+    df["value"] = [float(df.loc[i, "value"])/ETH_DECIMAL for i in range (df.shape[0])]
 
-    df_extract_from = df.loc[:,["index", "address", "timeStamp", "value", "gas","gasPrice"]]
+    # df["gas"] = df.loc[:, "gas"]/10E18
+    # df["gasPrice"] = df.loc[:, "gasPrice"]/10E18
+
+    print(df.shape)
+
+    # df_extract_from = df.loc[:,["index", "address", "timeStamp", "value", "gas","gasPrice"]]
+    # #extract features with tsfresh
+    # features_tsfresh = extract_features(df_extract_from,
+    #                     column_id='address',
+    #                     column_sort='index',
+    #                     kind_to_fc_parameters=FC_TSFRESH,
+    #                     # we impute = remove all NaN features automatically
+    #                     impute_function=impute)
+    # features_tsfresh.reset_index(inplace=True)
+
+    df_extract_from_v = df.loc[:,["index", "address", "value"]]
     #extract features with tsfresh
-    features_tsfresh = extract_features(df_extract_from,
+    features_tsfresh_v = extract_features(df_extract_from_v,
                         column_id='address',
                         column_sort='index',
-                        kind_to_fc_parameters=FC_TSFRESH,
+                        default_fc_parameters=FC_TSFRESH_VALUE,
                         # we impute = remove all NaN features automatically
                         impute_function=impute)
-    features_tsfresh.reset_index(inplace=True)
+    features_tsfresh_v.reset_index(inplace=True)
+
+    df_extract_from_t = df.loc[:,["index", "address", "timeStamp"]]
+    #extract features with tsfresh
+    features_tsfresh_t = extract_features(df_extract_from_t,
+                        column_id='address',
+                        column_sort='index',
+                        default_fc_parameters=FC_TSFRESH_TIME,
+                        # we impute = remove all NaN features automatically
+                        impute_function=impute)
+    features_tsfresh_t.reset_index(inplace=True)
+
+    df_extract_from_gas = df.loc[:,["index", "address", "gas", "gasPrice"]]
+    #extract features with tsfresh
+    features_tsfresh_gas = extract_features(df_extract_from_gas,
+                        column_id='address',
+                        column_sort='index',
+                        kind_to_fc_parameters=FC_TSFRESH_GAS_2,
+                        # we impute = remove all NaN features automatically
+                        impute_function=impute)
+    features_tsfresh_gas.reset_index(inplace=True)
 
     features_interact = get_df_interact_stats(df)
 
-    merge1 = features_interact.merge(features_tsfresh, left_on="address", right_on="index", validate="one_to_one").drop(columns=["index"])
-    
+    merge1 = features_interact.merge(features_tsfresh_gas, left_on="address", right_on="index", validate="one_to_one").drop(columns=["index"])
+    merge1 = merge1.merge(features_tsfresh_t, left_on="address", right_on="index", validate="one_to_one").drop(columns=["index"])
+    merge1 = merge1.merge(features_tsfresh_v, left_on="address", right_on="index", validate="one_to_one").drop(columns=["index"])
+
     if N_FILES != -1:
         assert merge1.shape[0] == N_FILES
 

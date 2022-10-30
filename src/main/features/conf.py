@@ -15,12 +15,10 @@ FC_TSFRESH_TIME = {
                             {'m': 2, 'r': 0.5},
                             {'m': 2, 'r': 0.7},
                             {'m': 2, 'r': 0.9}],
-    "autocorrelation": [{'lag': 0},
-                        {'lag': 1},
+    "autocorrelation": [{'lag': 1},
                         {'lag': 2},
                         {'lag': 3},
                         {'lag': 4}],
-    "benford_correlation": None,
     "c3": [{'lag': 0},
             {'lag': 1},
             {'lag': 2},
@@ -29,11 +27,11 @@ FC_TSFRESH_TIME = {
     "binned_entropy": [{'max_bins': 5}],
     "count_above_mean": None,
     "count_below_mean": None,
+    "has_duplicate": None,
     "kurtosis": None,
     "mean": None,
     "mean_abs_change": None,
     "mean_change": None,
-    "mean_second_derivative_central": None,
     "median": None,
     "quantile": [{'q': 0.99},
             {'q': 0.95},
@@ -48,8 +46,16 @@ FC_TSFRESH_TIME = {
     "variance": None,
     "variance_larger_than_standard_deviation": None,
     "variation_coefficient": None,
+
+    "percentage_of_reoccurring_datapoints_to_all_datapoints": None,
+    "percentage_of_reoccurring_values_to_all_values": None,
+    "permutation_entropy": [{'dimension': 3, 'tau': 1},
+                            {'dimension': 4, 'tau': 1},
+                            {'dimension': 5, 'tau': 1}],
+    "ratio_value_number_to_time_series_length": None,
 }
 
+# add custom features
 FC_TSFRESH_TIME[time_since_first] = [{'current_time': current_time}]
 FC_TSFRESH_TIME[time_since_last] = [{'current_time': current_time}]
 FC_TSFRESH_TIME[ratio_tx_time_since_time] = [{'current_time': current_time, "time": DAY},
@@ -62,6 +68,7 @@ FC_TSFRESH_TIME[ratio_tx_time_since_last_tx] = [{"time": DAY},
           {"time": MONTHS_3}]
 FC_TSFRESH_TIME[ratio_above_mean] = None
 
+
 FC_TSFRESH_VALUE = {
     "abs_energy": None,
     "approximate_entropy": [{'m': 2, 'r': 0.1},
@@ -69,8 +76,7 @@ FC_TSFRESH_VALUE = {
                             {'m': 2, 'r': 0.5},
                             {'m': 2, 'r': 0.7},
                             {'m': 2, 'r': 0.9}],
-    "autocorrelation": [{'lag': 0},
-                        {'lag': 1},
+    "autocorrelation": [{'lag': 1},
                         {'lag': 2},
                         {'lag': 3},
                         {'lag': 4}],
@@ -91,17 +97,25 @@ FC_TSFRESH_VALUE = {
     "variance": None,
     "variance_larger_than_standard_deviation": None,
     "variation_coefficient": None,
+    
+    "percentage_of_reoccurring_datapoints_to_all_datapoints": None,
+    "percentage_of_reoccurring_values_to_all_values": None,
+    "permutation_entropy": [{'dimension': 3, 'tau': 1},
+                            {'dimension': 4, 'tau': 1},
+                            {'dimension': 5, 'tau': 1}],
+    "ratio_beyond_r_sigma" : [{'r': 1},
+            {'r': 2},
+            {'r': 6}],
+    "ratio_value_number_to_time_series_length": None,
 }
 
 FC_TSFRESH_GAS = {
-    "abs_energy": None,
     "approximate_entropy": [{'m': 2, 'r': 0.1},
                             {'m': 2, 'r': 0.3},
                             {'m': 2, 'r': 0.5},
                             {'m': 2, 'r': 0.7},
                             {'m': 2, 'r': 0.9}],
-    "autocorrelation": [{'lag': 0},
-                        {'lag': 1},
+    "autocorrelation": [{'lag': 1},
                         {'lag': 2},
                         {'lag': 3},
                         {'lag': 4}],
@@ -122,6 +136,16 @@ FC_TSFRESH_GAS = {
     "variance": None,
     "variance_larger_than_standard_deviation": None,
     "variation_coefficient": None,
+
+    "percentage_of_reoccurring_datapoints_to_all_datapoints": None,
+    "percentage_of_reoccurring_values_to_all_values": None,
+    "permutation_entropy": [{'dimension': 3, 'tau': 1},
+                            {'dimension': 4, 'tau': 1},
+                            {'dimension': 5, 'tau': 1}],
+    "ratio_beyond_r_sigma" : [{'r': 1},
+            {'r': 2},
+            {'r': 6}],
+    "ratio_value_number_to_time_series_length": None,
 }
 
 FC_TSFRESH = {
@@ -131,4 +155,12 @@ FC_TSFRESH = {
     "gasPrice": FC_TSFRESH_GAS
 }
 
+FC_TSFRESH_T_V = {
+    "timeStamp": FC_TSFRESH_TIME,
+    "value": FC_TSFRESH_VALUE,
+}
 
+FC_TSFRESH_GAS_2 = {
+    "gas": FC_TSFRESH_GAS,
+    "gasPrice": FC_TSFRESH_GAS
+}

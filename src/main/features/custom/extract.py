@@ -1,7 +1,6 @@
 from tsfresh.feature_extraction.feature_calculators import set_property
 
 import numpy as np
-import pandas as pd
 
 @set_property("fctype", "simple")
 def time_since_first(x, current_time):

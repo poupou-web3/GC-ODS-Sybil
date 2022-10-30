@@ -1,7 +1,11 @@
 import unittest
 
 import sys
-absolute_path = 'd:\\Perso\\Gitcoin\\Hackathon_open_data'
+import os
+from pathlib import Path
+absolute_path = os.fspath(Path.cwd().parent)
+if absolute_path not in sys.path:
+    sys.path.append(absolute_path)
 if not absolute_path in sys.path:
     sys.path.append(absolute_path)
 
