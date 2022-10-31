@@ -21,3 +21,11 @@ data
 
 The main jupyter notebook used to create the report is [k_mean_eth](https://github.com/poupou-web3/GC-ODS-Sybil/blob/main/jupyter/10_28_k_mean_eth.ipynb).
 Be carefull before running it is memory heavy because it automatically export more than 150 charts.
+
+
+Needed package are
+pip install jupyter-lab 
+pip install pandas
+pip install scikit-learn
+pip install tsfresh
+pip install seaborn 
