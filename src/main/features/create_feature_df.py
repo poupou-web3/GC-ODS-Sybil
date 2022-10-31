@@ -20,7 +20,7 @@ from src.main.features.create_features import *
 N_FILES = -1
 ETH_DECIMAL = 10E18
 
-tx_chain = 'eth_std'
+tx_chain = 'eth_std' # change the chain to "eth_polygon" if you wish to create features for polygon chain 
 RELATIVE_PATH_TX = '/data/transactions/'
 
 if __name__ == '__main__':
